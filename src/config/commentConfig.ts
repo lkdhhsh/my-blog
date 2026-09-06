@@ -52,17 +52,23 @@ export const commentConfig: CommentConfig = {
 	},
 
 	//giscus评论系统配置
+	// 启用步骤：
+	// 1. 仓库 Settings → General → Features 勾选 Discussions
+	// 2. 安装 giscus App: https://github.com/apps/giscus
+	// 3. 打开 https://giscus.app/zh-CN ，输入仓库 lkdhhsh/my-blog，
+	//    映射方式选 pathname，分类选 Announcements，复制生成的 data-category-id
+	// 4. 填入下方 categoryId，然后把本文件顶部 type 从 "none" 改为 "giscus"
 	giscus: {
 		// 设置 Giscus 评论系统仓库
-		repo: "",
+		repo: "lkdhhsh/my-blog",
 		// 设置 Giscus 评论系统仓库ID
-		repoId: "R_kgD2gfdFGd",
+		repoId: "R_kgDOUQHgRA",
 		// 设置 Giscus 评论系统分类
-		category: "General",
-		// 获取 Giscus 评论系统分类ID
-		categoryId: "DIC_kwDOKy9HOc4CegmW",
+		category: "Announcements",
+		// 获取 Giscus 评论系统分类ID（在 https://giscus.app/zh-CN 生成后粘贴到这里）
+		categoryId: "",
 		// 获取 Giscus 评论系统映射方式
-		mapping: "title",
+		mapping: "pathname",
 		// 获取 Giscus 评论系统严格模式
 		strict: "0",
 		// 获取 Giscus 评论系统反应功能
