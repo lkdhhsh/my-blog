@@ -65,11 +65,16 @@ const adapter = process.env.CF_WORKERS
 		})
 	: undefined;
 
+// GitHub Pages 部署时由 CI 注入完整站点地址和子路径（见 .github/workflows/deploy.yml）
+// 本地开发/构建时回退到 siteConfig.site_url 和根路径
+const SITE_URL = process.env.SITE_URL || siteConfig.site_url;
+const SITE_BASE = process.env.SITE_BASE || "/";
+
 // https://astro.build/config
 export default defineConfig({
-	site: siteConfig.site_url,
+	site: SITE_URL,
 
-	base: "/",
+	base: SITE_BASE,
 	trailingSlash: "always",
 
 	// 字体配置 - 只加载实际使用的字体，跳过未引用的以加快构建

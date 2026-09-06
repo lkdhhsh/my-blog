@@ -2,7 +2,7 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main, master ]
   workflow_dispatch:
 
 # Pages 部署需要的权限
@@ -16,33 +16,43 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+env:
+  # 项目页地址：https://<用户名>.github.io/<仓库名>/
+  # 仓库名为 <用户名>.github.io 时，下方 build 任务会把 SITE_BASE 修正为根路径
+  SITE_URL: https://${{ github.repository_owner }}.github.io
+  SITE_BASE: /${{ github.event.repository.name }}/
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 11.22.0
           run_install: false
-          
+
+      - name: Use root path for user site (<username>.github.io)
+        if: endsWith(github.event.repository.name, '.github.io')
+        run: echo "SITE_BASE=/" >> $GITHUB_ENV
+
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
-      
+
       - name: Build site
         run: pnpm run build
 
       - name: Create .nojekyll file
         run: touch dist/.nojekyll
-      
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
